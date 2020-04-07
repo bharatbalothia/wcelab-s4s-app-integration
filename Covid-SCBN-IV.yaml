@@ -125,7 +125,7 @@ integration:
                             template: application/json
                   - url:
                       template: >-
-                        https://s4s-supplement-service-dev.mybluemix.net/iv-token
+                        https://s4s-supplement-service-dev.mybluemix.net/s4s/iv-token
                 $map: 'http://ibm.com/appconnect/map/v1'
                 input:
                   - variable: Request
@@ -464,7 +464,7 @@ integration:
                                       template: application/json
                             - url:
                                 template: >-
-                                  https://s4s-supplement-service-dev.mybluemix.net/iv-token
+                                  https://s4s-supplement-service-dev.mybluemix.net/s4s/iv-token
                           $map: 'http://ibm.com/appconnect/map/v1'
                           input:
                             - variable: Request
