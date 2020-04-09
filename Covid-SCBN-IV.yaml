@@ -61,8 +61,8 @@ integration:
                   - variable: Request
                     $ref: '#/trigger/payload'
               sample-data: >-
-                supplier id,customer id,location id,item id,quantity,available
-                from
+                supplier id,customer id,location id,item id,product class,
+                quantity, uom, available from
               output-schema:
                 $schema: 'http://json-schema.org/draft-04/schema#'
                 type: array
@@ -77,7 +77,11 @@ integration:
                       type: string
                     item id:
                       type: string
+                    product class:
+                      type: string
                     quantity:
+                      type: string
+                    uom:
                       type: string
                     available from:
                       type: string
