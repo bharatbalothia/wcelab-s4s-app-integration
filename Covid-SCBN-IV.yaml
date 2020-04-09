@@ -110,6 +110,8 @@ integration:
                         "buyer_scbn_id": "{{$CSVParserParse[0]."customer
                         id"}}", 
 
+                        "supplier_mailslot_id":"{{$Request.MSlotID}}",
+
                         "operation": "supplies",  
 
                         "force_token": "false"
@@ -180,23 +182,7 @@ integration:
                     $ref: '#/node-output/HTTP Invoke method/response/payload'
                   - variable: HTTPInvokemethodMetadata
                     $ref: '#/node-output/HTTP Invoke method/response'
-              sample-data: >-
-                {
-
-                "url":
-                "https://api.watsoncommerce.ibm.com/inventory/8371983/v1/supplies",
-
-                "buyer_scbn_id": "CA_NY",
-
-                "iv_tenant_id": "8371983", 
-
-                "bearer_token":
-                "fdohd97397dhjalhjdoh297497qihfhfkhaiy3986209yvkdkfdkhakhfkhroy29yfkhfkhsk
-                hdkhdoy397697==", 
-
-                "time_to_live": "600" 
-
-                }
+              sample-data: "{\n    \"url\": \"https://api.watsoncommerce.ibm.com/inventory/us-6fd57b71/v1/supplies\",\n    \"buyer_scbn_id\": \"scbn_1\",\n    \"iv_tenant_id\": \"us-6fd57b71\",\n    \"bearer_token\": \"IXidyQqeP8VVutvj5MPQ7TouSPbvqXeY\",\n    \"time_to_live\": 43170,\n  \t\"supplier_id\":\"ABC\"\n}"
               output-schema:
                 $schema: 'http://json-schema.org/draft-04/schema#'
                 type: object
@@ -210,8 +196,70 @@ integration:
                   bearer_token:
                     type: string
                   time_to_live:
+                    type: number
+                  supplier_id:
                     type: string
                 title: Parsed JSON
+          - if:
+              name: If 5
+              input:
+                - variable: Request
+                  $ref: '#/trigger/payload'
+                - variable: CSVParserParse
+                  $ref: '#/node-output/CSV Parser Parse/response/payload'
+                - variable: HTTPInvokemethod
+                  $ref: '#/node-output/HTTP Invoke method/response/payload'
+                - variable: HTTPInvokemethodMetadata
+                  $ref: '#/node-output/HTTP Invoke method/response'
+                - variable: JSONParserParse2
+                  $ref: '#/node-output/JSON Parser Parse 2/response/payload'
+              branch:
+                - condition:
+                    '{{$JSONParserParse2.supplier_id}}':
+                      =: ''
+                  execute: []
+                  completion-action:
+                    terminate:
+                      error:
+                        input:
+                          - variable: Request
+                            $ref: '#/trigger/payload'
+                          - variable: CSVParserParse
+                            $ref: '#/node-output/CSV Parser Parse/response/payload'
+                          - variable: HTTPInvokemethod
+                            $ref: '#/node-output/HTTP Invoke method/response/payload'
+                          - variable: HTTPInvokemethodMetadata
+                            $ref: '#/node-output/HTTP Invoke method/response'
+                          - variable: JSONParserParse2
+                            $ref: '#/node-output/JSON Parser Parse 2/response/payload'
+                        message: >-
+                          "Supplier ID not found in Token service. Please
+                          onboard supplier"
+                        status-code: 400
+                - condition:
+                    '{{$JSONParserParse2.supplier_id}}': '{{$CSVParserParse[0]."supplier id"}}'
+                  execute: []
+              else:
+                execute: []
+                completion-action:
+                  terminate:
+                    error:
+                      input:
+                        - variable: Request
+                          $ref: '#/trigger/payload'
+                        - variable: CSVParserParse
+                          $ref: '#/node-output/CSV Parser Parse/response/payload'
+                        - variable: HTTPInvokemethod
+                          $ref: '#/node-output/HTTP Invoke method/response/payload'
+                        - variable: HTTPInvokemethodMetadata
+                          $ref: '#/node-output/HTTP Invoke method/response'
+                        - variable: JSONParserParse2
+                          $ref: '#/node-output/JSON Parser Parse 2/response/payload'
+                      message: >-
+                        "Supplier ID from token service. is not matching with
+                        Supplier ID in Payload
+                      status-code: 400
+              output-schema: {}
           - set-variable:
               name: Set variable
               map:
@@ -449,6 +497,8 @@ integration:
                                   "buyer_scbn_id":
                                   "{{$CSVParserParse[0]."customer id"}}", 
 
+                                  "supplier_mailslot_id":"{{$Request.MSlotID}}",
+
                                   "operation": "supplies",  
 
                                   "force_token": "true"
@@ -566,14 +616,7 @@ integration:
                                         $ref: >-
                                           #/node-output/HTTP Invoke method
                                           2/response
-                                  sample-data: |-
-                                    {
-                                        "url": "https://api.watsoncommerce.ibm.com/inventory/us-6fd57b71/v1/supplies",
-                                        "buyer_scbn_id": "scbn_1",
-                                        "iv_tenant_id": "us-6fd57b71",
-                                        "bearer_token": "lgLaf7u9yvFVOUiUNsc2oZrigQ7Cx8mU",
-                                        "time_to_live": 43200
-                                    }
+                                  sample-data: "{\n    \"url\": \"https://api.watsoncommerce.ibm.com/inventory/us-6fd57b71/v1/supplies\",\n    \"buyer_scbn_id\": \"scbn_1\",\n    \"iv_tenant_id\": \"us-6fd57b71\",\n    \"bearer_token\": \"IXidyQqeP8VVutvj5MPQ7TouSPbvqXeY\",\n    \"time_to_live\": 43170,\n  \t\"supplier_id\":\"ABC\"\n}"
                                   output-schema:
                                     $schema: 'http://json-schema.org/draft-04/schema#'
                                     type: object
@@ -587,6 +630,8 @@ integration:
                                       bearer_token:
                                         type: string
                                       time_to_live:
+                                        type: number
+                                      supplier_id:
                                         type: string
                                     title: Parsed JSON
                               - custom-action:
@@ -886,6 +931,8 @@ integration:
                       - variable: HTTPInvokemethod2Metadata
                         $ref: '#/node-output/HTTP Invoke method 2/response'
                     mappings:
+                      - MSlotID:
+                          template: '{{$Request.MSlotID}}'
                       - Payload:
                           template: '"Sync Supply  called Successfully"'
                   input:
@@ -910,9 +957,13 @@ models:
   SCBNtoIV:
     name: SCBNtoIV
     properties:
-      Payload:
+      MSlotID:
         required: false
         id: true
+        type: string
+      Payload:
+        required: false
+        id: false
         type: string
     plural: SCBNtoIV
     description: ' '
