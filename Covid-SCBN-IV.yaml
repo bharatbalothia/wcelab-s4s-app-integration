@@ -168,8 +168,8 @@ integration:
                         - variable: HTTPInvokemethodMetadata
                           $ref: '#/node-output/HTTP Invoke method/response'
                       message: >-
-                        "NodeJs Service Failed with Error:"
-                        {{$HTTPInvokemethodMetadata}}
+                        "NodeJs Service Failed with Error:"  
+                        {{$HTTPInvokemethod.responseBody}}
                       status-code: 400
               output-schema: {}
           - parse:
@@ -826,7 +826,7 @@ integration:
                                                 $ref: >-
                                                   #/node-output/HTTP Invoke method
                                                   2/response
-                                            message: '{{$HTTPInvokemethod4Metadata}}'
+                                            message: '{{$HTTPInvokemethod4.responseBody}}'
                                             status-code: 400
                                   else:
                                     execute: []
@@ -906,8 +906,9 @@ integration:
                         - variable: HTTPInvokemethod2Metadata
                           $ref: '#/node-output/HTTP Invoke method 2/response'
                       message: >-
-                        "IV Sync Supply Failed With Error": 
-                        {{$HTTPInvokemethod2Metadata}}
+                        "IV Sync Supply Failed With Error":  IV
+                        URL-{{$JSONParserParse2.url}} :
+                        {{$HTTPInvokemethod2.responseBody}} : 
                       status-code: 400
               output-schema: {}
           - response:
