@@ -9,7 +9,7 @@ Deployment process
 7.Open the flow
 8.Click on Edit flow
 9.Select any Http connecter.
-10.create account configuration by clicking on Add a new account
+10.Create account configuration by clicking on Add a new account
 	
 	Leave all fileds blank Click on ‘Connect’
 	Ensure All fields are seen and populated with values.
