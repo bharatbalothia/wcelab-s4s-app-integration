@@ -1,14 +1,23 @@
 Deployment process
 
 1.Developer is ready to push to prod
+
 2.Developer exports the yaml to local machine
+
 3.Developoer uploads the yaml to github and tag for release to prod.
+
 4.Release team downloads from github by release tag 
+
 5.Release team logs in to production app connect.
+
 6.import the Yaml in to production environment
+
 7.Open the flow
+
 8.Click on Edit flow
+
 9.Select any Http connecter.
+
 10.Create account configuration by clicking on Add a new account
 	
 	Leave all fileds blank Click on ‘Connect’
