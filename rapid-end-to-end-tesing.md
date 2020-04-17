@@ -27,7 +27,7 @@ __1. Happy Path:__
    
 <h3>App Connect Test Cases:</h3>
 
-__Note: Currently App Connect is not protected with any Authentication Mechanism, so there is no need of passing any authetication bearer token etc.__
+> Note: Currently App Connect is not protected with any Authentication Mechanism, so there is no need of passing any authetication bearer token etc.
 
    1. Call App Connect flow using Postman Client with 
    2. Malformed CSV inside the JSON Payload so CSV Parser can be failed in that case.
