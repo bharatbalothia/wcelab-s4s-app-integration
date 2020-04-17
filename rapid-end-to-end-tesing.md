@@ -13,8 +13,15 @@
 
   1.	Component Owner will develop the test cases or get it done by developer and review.
   1.	Test cases should be tested by someone other than the person who coded or own the component. The test case should be reproduced by the tester based on the document provided by the test case writer.
+
+## 3. Resources:
+  
+1. [Mindmap and Test Cases Spreadsheet](https://ibm.ent.box.com/file/647930438099)
+1. [Demo Data](https://github.ibm.com/wcelab/S4S-PerformanceTesting/tree/master/demo_data)
     
-1. ###App Connect Test Cases
+## 4. Test Cases
+
+### 1. App Connect Test Cases
 
 >Note: Currently App Connect is not protected with any Authentication Mechanism, so there is no need of passing any authetication bearer token etc.
 1. Call App Connect flow using Postman Client with 
@@ -56,28 +63,22 @@ What if:
    }
    
    ```
-   [App Connect Dev API](https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/3e595d26cea339a4f91ccb59b8eda6b8204c53eee08371b9e68d47967bfa21e6/NOIW5t/SCBNtoIV)
+   App Connect Dev API `https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/3e595d26cea339a4f91ccb59b8eda6b8204c53eee08371b9e68d47967bfa21e6/NOIW5t/SCBNtoIV)`
    
 
-<h3>Supplier Onboarding Test Cases:</h3>
+### 2. Supplier Onboarding Test Cases
 
 End to End Test Cases:
 
 Call App Connect Flow to Post the to IV using Postman
 
-Onboarding Test Cases:
+### 3. Onboarding Test Cases
 Onboarding using Scripts and Manually.
 
 __1. Happy Path:__
 
    1. Upload a Solution Defined Formatted CSV file from SCBN's and the Quantities of all the SKU's for all the Ship Nodes should be reflected in BUC UI.
    2. Upload a Solution Defined Formatted CSV from SCBN with one Line Item and with one 
-
-
-#### Resources:
-  
-1. [Mindmap and Test Cases Spreadsheet](https://ibm.ent.box.com/file/647930438099)
-1. [Demo Data](https://github.ibm.com/wcelab/S4S-PerformanceTesting/tree/master/demo_data)
 
 
 
