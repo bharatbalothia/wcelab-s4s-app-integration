@@ -39,18 +39,18 @@ __Note: Currently App Connect is not protected with any Authentication Mechanism
       "available from" is less than current date then set eta = "1900-01-01T00:00:00Z" else "available from"
 
       
-What if:
-When The item rows are present but missing some mandatory data fields like:
-Item ID
-Quantity
-Location ID
-Available From
-Supplier ID
-When Token Generation Service Returns the Supplier ID based on the Mailslot ID Input but does not respond wither URL or Bearer Token
-When IV is down or a wrong / malformed IV URL supplied by Token Service
- 
+	What if:
+	1.	When the invalid / incomplete rows are present in CSV payload and missing mandatory data fields like:
+		1.	Item ID
+		2.	Quantity
+		3.	Location ID
+		4.	Available From
+		5.	Supplier ID
+	2.	When Token Generation Service returns the Supplier ID based on the Mailslot input but does not return URL or Bearer Token or both?
+	3.	When IV is down or a wrong / malformed IV URL supplied by Token Service?
+	 
 
-   
+   __Sample JSON Data which SCBN pushes to App Connect__
    
    ```json
       
@@ -67,6 +67,7 @@ When IV is down or a wrong / malformed IV URL supplied by Token Service
    
    ```
 
+<h3>Supplier Onboarding Test Cases:</h3>
   
  Mindmap and a spreadsheet. https://ibm.ent.box.com/file/647930438099
  
