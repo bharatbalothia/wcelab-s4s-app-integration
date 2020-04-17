@@ -37,62 +37,34 @@ __Note: Currently App Connect is not protected with any Authentication Mechanism
    9. Validate data in IV either manually or by calling IV API to check that App Connect is inserting the data correctly for following conditions
       "available from" Is greater than current date then set type = WIP else ONHAND"
       "available from" is less than current date then set eta = "1900-01-01T00:00:00Z" else "available from"
+
       
+What if:
+When The item rows are present but missing some mandatory data fields like:
+Item ID
+Quantity
+Location ID
+Available From
+Supplier ID
+When Token Generation Service Returns the Supplier ID based on the Mailslot ID Input but does not respond wither URL or Bearer Token
+When IV is down or a wrong / malformed IV URL supplied by Token Service
+ 
+
    
    
    ```json
+      
    {
-       "MSlotID": "SJNG7A01",
-       "Payload": "supplier id, customer id, location id, item id,product class, quantity,uom,available from
-       KC,
-       scbn_3,
-       DALLAS,
-       46827,
-       NEW,
-       40,
-       UNIT,
-       1900 - 01 - 01
-       KC,
-       scbn_3,
-       FAIRFIELD,
-       46827,
-       NEW,
-       20,
-       UNIT,
-       1900 - 01 - 01 T00: 00: 00
-       KC,
-       scbn_3,
-       LOSANGELES,
-       46827,
-       NEW,
-       14,
-       CASE,
-       1900 - 01 - 01 T00: 00: 00
-       KC,
-       scbn_3,
-       SANJOSE,
-       46827,
-       NEW,
-       14,
-       UNIT,
-       1900 - 01 - 01 T00: 00: 00
-       KC,
-       scbn_3,
-       SANFRANCISCO,
-       46827,
-       NEW,
-       15,
-       UNIT,
-       2020 - 04 - 12 T00: 00: 00
-       KC,
-       scbn_3,
-       VISTA,
-       46827,
-       NEW,
-       15,
-       UNIT,
-       2020 - 05 - 20 T00: 00: 00 "
+      "MSlotID": "SJNG7A01",
+      "Payload": "supplier id, customer id, location id, item id,product class, quantity,uom,available from
+      KC,scbn_3,DALLAS,46827,NEW,15,UNIT,1900-01-01T00:00:00
+      KC,scbn_3,DALLAS,46828,NEW,33,UNIT,1900-01-01T00:00:00
+      KC,scbn_3,DALLAS,46867,NEW,23,CASE,1900-01-01T00:00:00
+      KC,scbn_3,DALLAS,47424,NEW,24,UNIT,1900-01-01T00:00:00
+      KC,scbn_3,DALLAS,62126,NEW,25,UNIT,2020-04-12T00:00:00
+      KC,scbn_3,DALLAS,62355,NEW,26,UNIT,1900-01-01T00:00:00"
    }
+   
    ```
 
   
