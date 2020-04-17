@@ -1,4 +1,4 @@
-Deployment process
+# Deployment process
 
 1. Developer is ready to push to prod
 1. Developer exports the yaml to local machine
