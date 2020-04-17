@@ -1,15 +1,18 @@
 <h1>End to End Testing Flow and Test Cases</h1>
 
-| Components  | SPOCs / Owners |
+| Components  | Component Owners |
 | ------------- | ------------- |
 | Inventory Visibility Application | Prithi Krishnaswamy |
 | OMS Business User Control (BUC) | Shishir Saha |
 | App Connect Flow | Bharat Balothia & Hari Krishna Kothamasam  |
 | SCBN Flow | Neil Hubbard & Venkat Potluri & Amit Saini |
 
+<h2>Testing Guidelines:</h2>
+	1.	Component Owner will develop the test cases or get it done by developer and review.
+	2.	Test cases should be tested by someone other than the person who coded or own the component. The test case should be reproduced by the tester based on the document provided by the test case writer.
 
-Test Cases:
-App Connect to IV
+
+End to End Test Cases:
 
 Call App Connect Flow to Post the to IV using Postman
 
