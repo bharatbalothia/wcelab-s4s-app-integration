@@ -23,6 +23,7 @@
 
 ### 1. App Connect Test Cases
 #### Way to test the App Connect Flow
+#### ![Test Cases and Results](Testing/App%20Connect%20Test%20Cases.docx)
 Call App Connect Flow to Post the to IV using Postman
 
 >Note: Currently App Connect is not protected with any Authentication Mechanism, so there is no need of passing any authetication bearer token etc.
@@ -66,8 +67,7 @@ What if:
    
    ```
    App Connect Dev API `https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/3e595d26cea339a4f91ccb59b8eda6b8204c53eee08371b9e68d47967bfa21e6/NOIW5t/SCBNtoIV)`
-   
-
+   	
 ### 2. Supplier Onboarding Test Cases
 > To be inserted
 
