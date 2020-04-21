@@ -23,4 +23,4 @@
 1. Create endpoint by clicking on ‘Create API key and documentation link’
    - Provide some name and click on Create button. It will display the link.
 1. Copy the link and paste in browser and look for endpoint url and sample curl statement.
-1. Use the same end point in calling application.
+1. Use the same end point in calling application. Also,please capture x-ibm-client:<value> and use same in http header in calling application.
