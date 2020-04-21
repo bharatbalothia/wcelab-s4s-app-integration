@@ -20,8 +20,6 @@
 1. Click on 'Done' button at right corner	
 1. Start the API
 1. Click on Manage
-1. 'Require applicaton authentication by api key' can be disabled no authentication method is needed.By default this will be enabled.. If it is enabled, then the calling application has to pass IBM Client ID as part of http headers for authentication purpose.
-   - If you disable ‘Click on Save’ button on the same page in below.
 1. Create endpoint by clicking on ‘Create API key and documentation link’
    - Provide some name and click on Create button. It will display the link.
 1. Copy the link and paste in browser and look for endpoint url and sample curl statement.
