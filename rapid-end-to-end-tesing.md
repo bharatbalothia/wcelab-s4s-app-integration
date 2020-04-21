@@ -71,15 +71,18 @@ What if:
 ### 2. Supplier Onboarding Test Cases
 > To be inserted
 
-### 3. Onboarding Test Cases
+### 3. Inventory Visibility Test Cases
+[IV Test Cases Spreadsheet @ Box](https://ibm.ent.box.com/file/655806869713)
+
+### 4. Onboarding Test Cases
 1. Onboarding using Scripts and Manually
 
-### 4. End to End Test Cases
-#### 1. Happy Path
+### 5. End to End Test Cases
+ #### 1. Happy Path
    1. Upload a Solution Defined Formatted CSV file from SCBN's and the Quantities of all the SKU's for all the Ship Nodes should be reflected in BUC UI.
    2. Upload a Solution Defined Formatted CSV from SCBN with one Line Item and with one 
-#### 2. Negative Test Cases
-> To be inserted here
+ #### 2. Negative Test Cases
+   > To be inserted here
 
 
 
