@@ -13,7 +13,7 @@
    1. Leave all fileds blank Click on ‘Connect’
    1. Ensure All fields are seen and populated with values.
 1. Modify the S4S service url and Crential values as below in 'set variable2' connector
-   s4s-url:<<URL>>
+   s4s-url:<<URL value>>
    s4s-credentials :<<Modify client id and client secret'>>
 1. Click on 'Done' button at right corner	
 1. Start the API
