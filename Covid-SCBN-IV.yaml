@@ -88,6 +88,32 @@ integration:
                 title: Parsed CSV
               options:
                 csv-header: true
+          - set-variable:
+              name: Set variable 2
+              map:
+                $map: 'http://ibm.com/appconnect/map/v1'
+                input:
+                  - variable: Request
+                    $ref: '#/trigger/payload'
+                  - variable: CSVParserParse
+                    $ref: '#/node-output/CSV Parser Parse/response/payload'
+                customSchemas:
+                  properties.`variable`:
+                    type: object
+                    properties:
+                      s4s-url:
+                        type: string
+                      s4s-credentials:
+                        type: string
+                mappings:
+                  - variable:
+                      mappings:
+                        - s4s-credentials:
+                            template: >-
+                              {{$base64encode('qfsiylcmw61nyi1ya2ekrukwqbr2j1cv:b94qiqa8v0c5ybcy42rszuqk9eqhtbu0','utf8'
+                              )}}
+                        - s4s-url:
+                            template: 'https://s4s-supplement-service-prod.mybluemix.net'
           - custom-action:
               name: HTTP Invoke method
               target:
@@ -124,20 +150,19 @@ integration:
                   - requestHeaders:
                       mappings:
                         - Authorization:
-                            template: >-
-                              Basic
-                              {{$base64encode('9kgjyvwfi3j5a9o2r6hgzt8u6u3vi9r7:rfmudl945hnxg1nutugtiei0ea67olvl','utf8')}}
+                            template: 'Basic {{$Setvariable2.variable."s4s-credentials"}}'
                         - Content-Type:
                             template: application/json
                   - url:
-                      template: >-
-                        https://s4s-supplement-service-dev.mybluemix.net/s4s/iv-token
+                      template: '{{$Setvariable2.variable."s4s-url"}}'
                 $map: 'http://ibm.com/appconnect/map/v1'
                 input:
                   - variable: Request
                     $ref: '#/trigger/payload'
                   - variable: CSVParserParse
                     $ref: '#/node-output/CSV Parser Parse/response/payload'
+                  - variable: Setvariable2
+                    $ref: '#/node-output/Set variable 2/response/payload'
           - if:
               name: If
               input:
@@ -145,6 +170,8 @@ integration:
                   $ref: '#/trigger/payload'
                 - variable: CSVParserParse
                   $ref: '#/node-output/CSV Parser Parse/response/payload'
+                - variable: Setvariable2
+                  $ref: '#/node-output/Set variable 2/response/payload'
                 - variable: HTTPInvokemethod
                   $ref: '#/node-output/HTTP Invoke method/response/payload'
                 - variable: HTTPInvokemethodMetadata
@@ -163,15 +190,17 @@ integration:
                           $ref: '#/trigger/payload'
                         - variable: CSVParserParse
                           $ref: '#/node-output/CSV Parser Parse/response/payload'
+                        - variable: Setvariable2
+                          $ref: '#/node-output/Set variable 2/response/payload'
                         - variable: HTTPInvokemethod
                           $ref: '#/node-output/HTTP Invoke method/response/payload'
                         - variable: HTTPInvokemethodMetadata
                           $ref: '#/node-output/HTTP Invoke method/response'
                       message: >-
                         "S4S Service Failed with the Error:  S4S
-                        Url:https://s4s-supplement-service-dev.mybluemix.net/s4s/iv-token 
-                        for the Buyer SCBN ID:{{$CSVParserParse[0]."customer
-                        id"}}  and Supplier Mail Slot ID :{{$Request.MSlotID}}  
+                        Url:{{$Setvariable2.variable."s4s-url"}}  for the Buyer
+                        SCBN ID:{{$CSVParserParse[0]."customer id"}}  and
+                        Supplier Mail Slot ID :{{$Request.MSlotID}}  
                         ({{$HTTPInvokemethod.responseBody}})
                       status-code: 400
               output-schema: {}
@@ -413,6 +442,8 @@ integration:
                     $ref: '#/trigger/payload'
                   - variable: CSVParserParse
                     $ref: '#/node-output/CSV Parser Parse/response/payload'
+                  - variable: Setvariable2
+                    $ref: '#/node-output/Set variable 2/response/payload'
                   - variable: HTTPInvokemethod
                     $ref: '#/node-output/HTTP Invoke method/response/payload'
                   - variable: HTTPInvokemethodMetadata
@@ -428,6 +459,8 @@ integration:
                   $ref: '#/trigger/payload'
                 - variable: CSVParserParse
                   $ref: '#/node-output/CSV Parser Parse/response/payload'
+                - variable: Setvariable2
+                  $ref: '#/node-output/Set variable 2/response/payload'
                 - variable: HTTPInvokemethod
                   $ref: '#/node-output/HTTP Invoke method/response/payload'
                 - variable: HTTPInvokemethodMetadata
@@ -520,18 +553,19 @@ integration:
                                   - Authorization:
                                       template: >-
                                         Basic
-                                        {{$base64encode('9kgjyvwfi3j5a9o2r6hgzt8u6u3vi9r7:rfmudl945hnxg1nutugtiei0ea67olvl','utf8')}}
+                                        {{$Setvariable2.variable."s4s-credentials"}}
                                   - Content-Type:
                                       template: application/json
                             - url:
-                                template: >-
-                                  https://s4s-supplement-service-dev.mybluemix.net/s4s/iv-token
+                                template: '{{$Setvariable2.variable."s4s-url"}}'
                           $map: 'http://ibm.com/appconnect/map/v1'
                           input:
                             - variable: Request
                               $ref: '#/trigger/payload'
                             - variable: CSVParserParse
                               $ref: '#/node-output/CSV Parser Parse/response/payload'
+                            - variable: Setvariable2
+                              $ref: '#/node-output/Set variable 2/response/payload'
                             - variable: HTTPInvokemethod
                               $ref: >-
                                 #/node-output/HTTP Invoke
@@ -565,6 +599,8 @@ integration:
                               3/response
                           - variable: CSVParserParse
                             $ref: '#/node-output/CSV Parser Parse/response/payload'
+                          - variable: Setvariable2
+                            $ref: '#/node-output/Set variable 2/response/payload'
                           - variable: HTTPInvokemethod
                             $ref: '#/node-output/HTTP Invoke method/response/payload'
                           - variable: HTTPInvokemethodMetadata
@@ -796,10 +832,50 @@ integration:
                           completion-action:
                             terminate:
                               error:
-                                input: []
+                                input:
+                                  - variable: Request
+                                    $ref: '#/trigger/payload'
+                                  - variable: HTTPInvokemethod3
+                                    $ref: >-
+                                      #/block/If 2/node-output/HTTP Invoke
+                                      method 3/response/payload
+                                  - variable: HTTPInvokemethod3Metadata
+                                    $ref: >-
+                                      #/block/If 2/node-output/HTTP Invoke
+                                      method 3/response
+                                  - variable: CSVParserParse
+                                    $ref: >-
+                                      #/node-output/CSV Parser
+                                      Parse/response/payload
+                                  - variable: Setvariable2
+                                    $ref: >-
+                                      #/node-output/Set variable
+                                      2/response/payload
+                                  - variable: HTTPInvokemethod
+                                    $ref: >-
+                                      #/node-output/HTTP Invoke
+                                      method/response/payload
+                                  - variable: HTTPInvokemethodMetadata
+                                    $ref: '#/node-output/HTTP Invoke method/response'
+                                  - variable: JSONParserParse2
+                                    $ref: >-
+                                      #/node-output/JSON Parser Parse
+                                      2/response/payload
+                                  - variable: Setvariable
+                                    $ref: >-
+                                      #/node-output/Set
+                                      variable/response/payload
+                                  - variable: HTTPInvokemethod2
+                                    $ref: >-
+                                      #/node-output/HTTP Invoke method
+                                      2/response/payload
+                                  - variable: HTTPInvokemethod2Metadata
+                                    $ref: >-
+                                      #/node-output/HTTP Invoke method
+                                      2/response
                                 message: >-
                                   "S4S Token service failed",  S4S URL
-                                  :https://s4s-supplement-service-dev.mybluemix.net/s4s/iv-token 
+                                  :{{$Setvariable2.variable."s4s-url"}} 
                                   ,{{$HTTPInvokemethod3.responseBody}} 
                                 status-code: 400
                         output-schema:
@@ -820,6 +896,8 @@ integration:
                           $ref: '#/trigger/payload'
                         - variable: CSVParserParse
                           $ref: '#/node-output/CSV Parser Parse/response/payload'
+                        - variable: Setvariable2
+                          $ref: '#/node-output/Set variable 2/response/payload'
                         - variable: HTTPInvokemethod
                           $ref: '#/node-output/HTTP Invoke method/response/payload'
                         - variable: HTTPInvokemethodMetadata
