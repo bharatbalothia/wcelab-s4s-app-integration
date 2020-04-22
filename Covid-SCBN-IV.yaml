@@ -168,8 +168,11 @@ integration:
                         - variable: HTTPInvokemethodMetadata
                           $ref: '#/node-output/HTTP Invoke method/response'
                       message: >-
-                        "NodeJs Service Failed with Error:"  
-                        {{$HTTPInvokemethod.responseBody}}
+                        "S4S Service Failed with the Error:  S4S
+                        Url:https://s4s-supplement-service-dev.mybluemix.net/s4s/iv-token 
+                        for the Buyer SCBN ID:{{$CSVParserParse[0]."customer
+                        id"}}  and Supplier Mail Slot ID :{{$Request.MSlotID}}  
+                        ({{$HTTPInvokemethod.responseBody}})
                       status-code: 400
               output-schema: {}
           - parse:
@@ -237,8 +240,9 @@ integration:
                           - variable: JSONParserParse2
                             $ref: '#/node-output/JSON Parser Parse 2/response/payload'
                         message: >-
-                          "Supplier ID not found in Token service. Please
-                          onboard supplier"
+                          "Supplier ID not returned from S4S Token service for
+                          the Buyer SCBN ID:{{$CSVParserParse[0]."customer
+                          id"}}  and Supplier Mail Slot:{{$Request.MSlotID}} "
                         status-code: 400
                 - condition:
                     '{{$JSONParserParse2.supplier_id}}': '{{$CSVParserParse[0]."supplier id"}}'
@@ -260,8 +264,10 @@ integration:
                         - variable: JSONParserParse2
                           $ref: '#/node-output/JSON Parser Parse 2/response/payload'
                       message: >-
-                        "Supplier ID from token service. is not matching with
-                        Supplier ID in Payload
+                        "Supplier ID ({{$JSONParserParse2.supplier_id}})
+                        returned from S4S Token serivce  is not matching with
+                        the Supplier ID ({{$CSVParserParse[0]."supplier id"}})
+                        present in Payload
                       status-code: 400
               output-schema: {}
           - set-variable:
@@ -371,7 +377,7 @@ integration:
                   - logLevel:
                       template: Debug
                   - logMessage:
-                      template: "{\n\t\"supplies\": {{$Setvariable.variable.csvarray}}\n}"
+                      template: "Data Recieved from Payload\n{\n\t\"supplies\": {{$Setvariable.variable.csvarray}}\n}"
           - custom-action:
               name: HTTP Invoke method 2
               target:
@@ -473,8 +479,9 @@ integration:
                                 template: Debug
                             - logMessage:
                                 template: >-
-                                  "Bearer Token Failed, Calling NodeJs Serice
-                                  for refresh token"
+                                  "Bearer Token returned from S4S Token service
+                                  is expired ,calling service to get fresh
+                                  Token"
                     - custom-action:
                         name: HTTP Invoke method 3
                         target:
@@ -775,58 +782,11 @@ integration:
                                       completion-action:
                                         terminate:
                                           error:
-                                            input:
-                                              - variable: Request
-                                                $ref: '#/trigger/payload'
-                                              - variable: JSONParserParse
-                                                $ref: >-
-                                                  #/block/If 3/node-output/JSON Parser
-                                                  Parse/response/payload
-                                              - variable: HTTPInvokemethod4
-                                                $ref: >-
-                                                  #/block/If 3/node-output/HTTP Invoke
-                                                  method 4/response/payload
-                                              - variable: HTTPInvokemethod4Metadata
-                                                $ref: >-
-                                                  #/block/If 3/node-output/HTTP Invoke
-                                                  method 4/response
-                                              - variable: HTTPInvokemethod3
-                                                $ref: >-
-                                                  #/block/If 2/node-output/HTTP Invoke
-                                                  method 3/response/payload
-                                              - variable: HTTPInvokemethod3Metadata
-                                                $ref: >-
-                                                  #/block/If 2/node-output/HTTP Invoke
-                                                  method 3/response
-                                              - variable: CSVParserParse
-                                                $ref: >-
-                                                  #/node-output/CSV Parser
-                                                  Parse/response/payload
-                                              - variable: HTTPInvokemethod
-                                                $ref: >-
-                                                  #/node-output/HTTP Invoke
-                                                  method/response/payload
-                                              - variable: HTTPInvokemethodMetadata
-                                                $ref: >-
-                                                  #/node-output/HTTP Invoke
-                                                  method/response
-                                              - variable: JSONParserParse2
-                                                $ref: >-
-                                                  #/node-output/JSON Parser Parse
-                                                  2/response/payload
-                                              - variable: Setvariable
-                                                $ref: >-
-                                                  #/node-output/Set
-                                                  variable/response/payload
-                                              - variable: HTTPInvokemethod2
-                                                $ref: >-
-                                                  #/node-output/HTTP Invoke method
-                                                  2/response/payload
-                                              - variable: HTTPInvokemethod2Metadata
-                                                $ref: >-
-                                                  #/node-output/HTTP Invoke method
-                                                  2/response
-                                            message: '{{$HTTPInvokemethod4.responseBody}}'
+                                            input: []
+                                            message: >-
+                                              "IV Sync Supply call Failed" ,IV
+                                              Url:{{$JSONParserParse2.url}}, 
+                                              {{$HTTPInvokemethod4.responseBody}} 
                                             status-code: 400
                                   else:
                                     execute: []
@@ -836,44 +796,11 @@ integration:
                           completion-action:
                             terminate:
                               error:
-                                input:
-                                  - variable: Request
-                                    $ref: '#/trigger/payload'
-                                  - variable: HTTPInvokemethod3
-                                    $ref: >-
-                                      #/block/If 2/node-output/HTTP Invoke
-                                      method 3/response/payload
-                                  - variable: HTTPInvokemethod3Metadata
-                                    $ref: >-
-                                      #/block/If 2/node-output/HTTP Invoke
-                                      method 3/response
-                                  - variable: CSVParserParse
-                                    $ref: >-
-                                      #/node-output/CSV Parser
-                                      Parse/response/payload
-                                  - variable: HTTPInvokemethod
-                                    $ref: >-
-                                      #/node-output/HTTP Invoke
-                                      method/response/payload
-                                  - variable: HTTPInvokemethodMetadata
-                                    $ref: '#/node-output/HTTP Invoke method/response'
-                                  - variable: JSONParserParse2
-                                    $ref: >-
-                                      #/node-output/JSON Parser Parse
-                                      2/response/payload
-                                  - variable: Setvariable
-                                    $ref: >-
-                                      #/node-output/Set
-                                      variable/response/payload
-                                  - variable: HTTPInvokemethod2
-                                    $ref: >-
-                                      #/node-output/HTTP Invoke method
-                                      2/response/payload
-                                  - variable: HTTPInvokemethod2Metadata
-                                    $ref: >-
-                                      #/node-output/HTTP Invoke method
-                                      2/response
-                                message: '"Node Js Serivece Failed To Get Refresh Token"'
+                                input: []
+                                message: >-
+                                  "S4S Token service failed",  S4S URL
+                                  :https://s4s-supplement-service-dev.mybluemix.net/s4s/iv-token 
+                                  ,{{$HTTPInvokemethod3.responseBody}} 
                                 status-code: 400
                         output-schema:
                           required: []
@@ -906,9 +833,9 @@ integration:
                         - variable: HTTPInvokemethod2Metadata
                           $ref: '#/node-output/HTTP Invoke method 2/response'
                       message: >-
-                        "IV Sync Supply Failed With Error":  IV
-                        URL-{{$JSONParserParse2.url}} :
-                        {{$HTTPInvokemethod2.responseBody}} : 
+                        "IV Sync Supply Failed With Error":  IV URL:
+                        {{$JSONParserParse2.url}} ,
+                        {{$HTTPInvokemethod2.responseBody}} 
                       status-code: 400
               output-schema: {}
           - response:
