@@ -12,11 +12,9 @@
 1. Create account configuration by clicking on Add a new account
    1. Leave all fileds blank Click on ‘Connect’
    1. Ensure All fields are seen and populated with values.
-1. Modify the S4S service url and Authorization values (Client ID and Client secret ) in below Http Connectors and in the log statements.
-   1. Click on  Http Connector 1
-   1. Modify URL 
-   1. Modify Client ID & Client Secret in 'Authroization' Field
-   1. Do the same steps for the ‘Http connector 3 
+1. Modify the S4S service url and Crential values as below in 'set variable2' connector
+   s4s-url:<<URL>>
+   s4s-credentials :<<Modify client id and client secret'>>
 1. Click on 'Done' button at right corner	
 1. Start the API
 1. Click on Manage
