@@ -198,7 +198,7 @@ integration:
                         - variable: HTTPInvokemethodMetadata
                           $ref: '#/node-output/HTTP Invoke method/response'
                       message: >-
-                        "S4S Service Failed with the Error:  S4S
+                        "S4S Service Failed with the Error:  S4S Token Service
                         Url:{{$Setvariable2.variable."s4s-url"}}  for the Buyer
                         SCBN ID:{{$CSVParserParse[0]."customer id"}}  and
                         Supplier Mail Slot ID :{{$Request.MSlotID}}  
@@ -408,6 +408,8 @@ integration:
                     $ref: '#/trigger/payload'
                   - variable: CSVParserParse
                     $ref: '#/node-output/CSV Parser Parse/response/payload'
+                  - variable: Setvariable2
+                    $ref: '#/node-output/Set variable 2/response/payload'
                   - variable: HTTPInvokemethod
                     $ref: '#/node-output/HTTP Invoke method/response/payload'
                   - variable: HTTPInvokemethodMetadata
@@ -420,7 +422,8 @@ integration:
                   - logLevel:
                       template: Debug
                   - logMessage:
-                      template: "Data Recieved from Payload\n{\n\t\"supplies\": {{$Setvariable.variable.csvarray}}\n}"
+                      template: '"Payload processed" : {{$Request.Payload}} '
+                customSchemas: {}
           - custom-action:
               name: HTTP Invoke method 2
               target:
@@ -473,6 +476,8 @@ integration:
                   $ref: '#/trigger/payload'
                 - variable: CSVParserParse
                   $ref: '#/node-output/CSV Parser Parse/response/payload'
+                - variable: Setvariable2
+                  $ref: '#/node-output/Set variable 2/response/payload'
                 - variable: HTTPInvokemethod
                   $ref: '#/node-output/HTTP Invoke method/response/payload'
                 - variable: HTTPInvokemethodMetadata
@@ -890,8 +895,8 @@ integration:
                                       #/node-output/HTTP Invoke method
                                       2/response
                                 message: >-
-                                  "S4S Token service failed",  S4S URL
-                                  :{{$Setvariable2.variable."s4s-url"}} 
+                                  "S4S Token service failed",  S4S Token Service
+                                  URL :{{$Setvariable2.variable."s4s-url"}} 
                                   ,{{$HTTPInvokemethod3.responseBody}} 
                                 status-code: 400
                         output-schema:
@@ -912,6 +917,8 @@ integration:
                           $ref: '#/trigger/payload'
                         - variable: CSVParserParse
                           $ref: '#/node-output/CSV Parser Parse/response/payload'
+                        - variable: Setvariable2
+                          $ref: '#/node-output/Set variable 2/response/payload'
                         - variable: HTTPInvokemethod
                           $ref: '#/node-output/HTTP Invoke method/response/payload'
                         - variable: HTTPInvokemethodMetadata
@@ -930,6 +937,40 @@ integration:
                         {{$HTTPInvokemethod2.responseBody}} 
                       status-code: 400
               output-schema: {}
+          - logging:
+              name: Log 3
+              map:
+                $map: 'http://ibm.com/appconnect/map/v1'
+                input:
+                  - variable: Request
+                    $ref: '#/trigger/payload'
+                  - variable: CSVParserParse
+                    $ref: '#/node-output/CSV Parser Parse/response/payload'
+                  - variable: Setvariable2
+                    $ref: '#/node-output/Set variable 2/response/payload'
+                  - variable: HTTPInvokemethod
+                    $ref: '#/node-output/HTTP Invoke method/response/payload'
+                  - variable: HTTPInvokemethodMetadata
+                    $ref: '#/node-output/HTTP Invoke method/response'
+                  - variable: JSONParserParse2
+                    $ref: '#/node-output/JSON Parser Parse 2/response/payload'
+                  - variable: Setvariable
+                    $ref: '#/node-output/Set variable/response/payload'
+                  - variable: HTTPInvokemethod2
+                    $ref: '#/node-output/HTTP Invoke method 2/response/payload'
+                  - variable: HTTPInvokemethod2Metadata
+                    $ref: '#/node-output/HTTP Invoke method 2/response'
+                mappings:
+                  - logLevel:
+                      template: Info
+                  - logMessage:
+                      template: >-
+                        "Sync Supply Called successfully for the Buyer SCBN
+                        ID:{{$CSVParserParse[0]."customer id"}} , Mail Slot
+                        ID:{{$Request.MSlotID}} and Supplier
+                        ID:{{$JSONParserParse2.supplier_id}}", IV
+                        URL:{{$JSONParserParse2.url}}, S4S Token Serivce
+                        URL:{{$Setvariable2.variable."s4s-url"}}
           - response:
               name: response-1
               reply-maps:
@@ -942,6 +983,8 @@ integration:
                         $ref: '#/trigger/payload'
                       - variable: CSVParserParse
                         $ref: '#/node-output/CSV Parser Parse/response/payload'
+                      - variable: Setvariable2
+                        $ref: '#/node-output/Set variable 2/response/payload'
                       - variable: HTTPInvokemethod
                         $ref: '#/node-output/HTTP Invoke method/response/payload'
                       - variable: HTTPInvokemethodMetadata
@@ -964,6 +1007,8 @@ integration:
                       $ref: '#/trigger/payload'
                     - variable: CSVParserParse
                       $ref: '#/node-output/CSV Parser Parse/response/payload'
+                    - variable: Setvariable2
+                      $ref: '#/node-output/Set variable 2/response/payload'
                     - variable: HTTPInvokemethod
                       $ref: '#/node-output/HTTP Invoke method/response/payload'
                     - variable: HTTPInvokemethodMetadata
