@@ -110,10 +110,11 @@ integration:
                       mappings:
                         - s4s-credentials:
                             template: >-
-                              {{$base64encode('qfsiylcmw61nyi1ya2ekrukwqbr2j1cv:b94qiqa8v0c5ybcy42rszuqk9eqhtbu0','utf8'
-                              )}}
+                              {{$base64encode('9kgjyvwfi3j5a9o2r6hgzt8u6u3vi9r7:rfmudl945hnxg1nutugtiei0ea67olvl',
+                              'utf8')}}
                         - s4s-url:
-                            template: 'https://s4s-supplement-service-prod.mybluemix.net'
+                            template: >-
+                              https://s4s-supplement-service-dev.mybluemix.net/s4s/iv-token
           - custom-action:
               name: HTTP Invoke method
               target:
@@ -243,6 +244,8 @@ integration:
                   $ref: '#/trigger/payload'
                 - variable: CSVParserParse
                   $ref: '#/node-output/CSV Parser Parse/response/payload'
+                - variable: Setvariable2
+                  $ref: '#/node-output/Set variable 2/response/payload'
                 - variable: HTTPInvokemethod
                   $ref: '#/node-output/HTTP Invoke method/response/payload'
                 - variable: HTTPInvokemethodMetadata
@@ -262,6 +265,8 @@ integration:
                             $ref: '#/trigger/payload'
                           - variable: CSVParserParse
                             $ref: '#/node-output/CSV Parser Parse/response/payload'
+                          - variable: Setvariable2
+                            $ref: '#/node-output/Set variable 2/response/payload'
                           - variable: HTTPInvokemethod
                             $ref: '#/node-output/HTTP Invoke method/response/payload'
                           - variable: HTTPInvokemethodMetadata
@@ -269,9 +274,10 @@ integration:
                           - variable: JSONParserParse2
                             $ref: '#/node-output/JSON Parser Parse 2/response/payload'
                         message: >-
-                          "Supplier ID not returned from S4S Token service for
-                          the Buyer SCBN ID:{{$CSVParserParse[0]."customer
-                          id"}}  and Supplier Mail Slot:{{$Request.MSlotID}} "
+                          "Supplier ID not returned from S4S Token service
+                          ({{$Setvariable2.variable."s4s-url"}} ) for the Buyer
+                          SCBN ID:{{$CSVParserParse[0]."customer id"}}  and
+                          Supplier Mail Slot:{{$Request.MSlotID}}  "
                         status-code: 400
                 - condition:
                     '{{$JSONParserParse2.supplier_id}}': '{{$CSVParserParse[0]."supplier id"}}'
@@ -286,6 +292,8 @@ integration:
                           $ref: '#/trigger/payload'
                         - variable: CSVParserParse
                           $ref: '#/node-output/CSV Parser Parse/response/payload'
+                        - variable: Setvariable2
+                          $ref: '#/node-output/Set variable 2/response/payload'
                         - variable: HTTPInvokemethod
                           $ref: '#/node-output/HTTP Invoke method/response/payload'
                         - variable: HTTPInvokemethodMetadata
@@ -294,9 +302,13 @@ integration:
                           $ref: '#/node-output/JSON Parser Parse 2/response/payload'
                       message: >-
                         "Supplier ID ({{$JSONParserParse2.supplier_id}})
-                        returned from S4S Token serivce  is not matching with
-                        the Supplier ID ({{$CSVParserParse[0]."supplier id"}})
-                        present in Payload
+                        returned from S4S Token
+                        serivce({{$Setvariable2.variable."s4s-url"}})  is not
+                        matching with the Supplier ID
+                        ({{$CSVParserParse[0]."supplier id"}}) present in
+                        Payload  for the Buyer SCBN
+                        ID:{{$CSVParserParse[0]."customer id"}} and Mail Slot
+                        ID:{{$Request.MSlotID}}
                       status-code: 400
               output-schema: {}
           - set-variable:
@@ -308,6 +320,8 @@ integration:
                     $ref: '#/trigger/payload'
                   - variable: CSVParserParse
                     $ref: '#/node-output/CSV Parser Parse/response/payload'
+                  - variable: Setvariable2
+                    $ref: '#/node-output/Set variable 2/response/payload'
                   - variable: HTTPInvokemethod
                     $ref: '#/node-output/HTTP Invoke method/response/payload'
                   - variable: HTTPInvokemethodMetadata
@@ -459,8 +473,6 @@ integration:
                   $ref: '#/trigger/payload'
                 - variable: CSVParserParse
                   $ref: '#/node-output/CSV Parser Parse/response/payload'
-                - variable: Setvariable2
-                  $ref: '#/node-output/Set variable 2/response/payload'
                 - variable: HTTPInvokemethod
                   $ref: '#/node-output/HTTP Invoke method/response/payload'
                 - variable: HTTPInvokemethodMetadata
@@ -733,6 +745,10 @@ integration:
                                         $ref: >-
                                           #/node-output/CSV Parser
                                           Parse/response/payload
+                                      - variable: Setvariable2
+                                        $ref: >-
+                                          #/node-output/Set variable
+                                          2/response/payload
                                       - variable: HTTPInvokemethod
                                         $ref: >-
                                           #/node-output/HTTP Invoke
@@ -896,8 +912,6 @@ integration:
                           $ref: '#/trigger/payload'
                         - variable: CSVParserParse
                           $ref: '#/node-output/CSV Parser Parse/response/payload'
-                        - variable: Setvariable2
-                          $ref: '#/node-output/Set variable 2/response/payload'
                         - variable: HTTPInvokemethod
                           $ref: '#/node-output/HTTP Invoke method/response/payload'
                         - variable: HTTPInvokemethodMetadata
