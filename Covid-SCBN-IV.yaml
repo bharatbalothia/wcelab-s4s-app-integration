@@ -89,21 +89,16 @@ integration:
                         type: string
                       s4s-credentials:
                         type: string
-                      s4s-supplies-url:
-                        type: string
                 mappings:
                   - variable:
                       mappings:
                         - s4s-credentials:
                             template: >-
-                              {{$base64encode('9kgjyvwfi3j5a9o2r6hgzt8u6u3vi9r7:rfmudl945hnxg1nutugtiei0ea67olvl',
-                              'utf8')}}
-                        - s4s-supplies-url:
-                            template: >-
-                              https://s4s-supplement-service-dev.mybluemix.net/s4s
+                              {{$base64encode('qfsiylcmw61nyi1ya2ekrukwqbr2j1cv:lmmotqlyh6n43pc9vv3b8bnsevj459r9','utf8'
+                              )}}
                         - s4s-url:
                             template: >-
-                              https://s4s-supplement-service-dev.mybluemix.net/s4s/iv-token
+                              https://s4s-supplement-service-prod.mybluemix.net/s4s/iv-token
           - custom-action:
               name: HTTP Invoke method
               target:
@@ -153,6 +148,44 @@ integration:
                     $ref: '#/node-output/CSV Parser Parse/response/payload'
                   - variable: Setvariable2
                     $ref: '#/node-output/Set variable 2/response/payload'
+          - logging:
+              name: Log 2
+              map:
+                $map: 'http://ibm.com/appconnect/map/v1'
+                input:
+                  - variable: Request
+                    $ref: '#/trigger/payload'
+                  - variable: CSVParserParse
+                    $ref: '#/node-output/CSV Parser Parse/response/payload'
+                  - variable: Setvariable2
+                    $ref: '#/node-output/Set variable 2/response/payload'
+                  - variable: HTTPInvokemethod
+                    $ref: '#/node-output/HTTP Invoke method/response/payload'
+                  - variable: HTTPInvokemethodMetadata
+                    $ref: '#/node-output/HTTP Invoke method/response'
+                mappings:
+                  - customMessages:
+                      mappings:
+                        - request_object:
+                            expression: '$HTTPInvokemethod '
+                        - response_object:
+                            expression: '$HTTPInvokemethodMetadata '
+                  - logLevel:
+                      template: Debug
+                  - logMessage:
+                      template: >-
+                        S4S Token Service API Call Successful. API Response Code
+                        : {{$HTTPInvokemethodMetadata."status-code"}}
+                customSchemas:
+                  properties.`customMessages`:
+                    type: object
+                    properties:
+                      request_object:
+                        type: object
+                        properties: {}
+                      response_object:
+                        type: object
+                        properties: {}
           - if:
               name: If
               input:
@@ -281,10 +314,10 @@ integration:
                         - variable: JSONParserParse2
                           $ref: '#/node-output/JSON Parser Parse 2/response/payload'
                       message: >-
-                        "Supplier ID not returned from S4S Token service
+                        ' "Supplier ID not returned from S4S Token service
                         ({{$Setvariable2.variable."s4s-url"}} ) for the Buyer
                         SCBN ID:{{$CSVParserParse[0]."customer id"}}  and
-                        Supplier Mail Slot:{{$Request.MSlotID}}  "
+                        Supplier Mail Slot:{{$Request.MSlotID}}  "' 
                       status-code: 400
               output-schema: {}
           - set-variable:
@@ -372,34 +405,10 @@ integration:
                                 - type:
                                     template: >-
                                       {{$toMillis($csvarrayItem."available from"
-                                      )>$toMillis($now() ) ? "WIP" : "ONHAND"}}
+                                      )>$toMillis($now() ) ? "INTRANSIT" :
+                                      "ONHAND"}}
                                 - unitOfMeasure:
                                     template: UNIT
-          - logging:
-              name: Log
-              map:
-                $map: 'http://ibm.com/appconnect/map/v1'
-                input:
-                  - variable: Request
-                    $ref: '#/trigger/payload'
-                  - variable: CSVParserParse
-                    $ref: '#/node-output/CSV Parser Parse/response/payload'
-                  - variable: Setvariable2
-                    $ref: '#/node-output/Set variable 2/response/payload'
-                  - variable: HTTPInvokemethod
-                    $ref: '#/node-output/HTTP Invoke method/response/payload'
-                  - variable: HTTPInvokemethodMetadata
-                    $ref: '#/node-output/HTTP Invoke method/response'
-                  - variable: JSONParserParse2
-                    $ref: '#/node-output/JSON Parser Parse 2/response/payload'
-                  - variable: Setvariable
-                    $ref: '#/node-output/Set variable/response/payload'
-                mappings:
-                  - logLevel:
-                      template: Debug
-                  - logMessage:
-                      template: '"Payload processed" : {{$Request.Payload}} '
-                customSchemas: {}
           - custom-action:
               name: HTTP Invoke method 2
               target:
@@ -445,6 +454,52 @@ integration:
                     $ref: '#/node-output/JSON Parser Parse 2/response/payload'
                   - variable: Setvariable
                     $ref: '#/node-output/Set variable/response/payload'
+          - logging:
+              name: Log
+              map:
+                $map: 'http://ibm.com/appconnect/map/v1'
+                input:
+                  - variable: Request
+                    $ref: '#/trigger/payload'
+                  - variable: CSVParserParse
+                    $ref: '#/node-output/CSV Parser Parse/response/payload'
+                  - variable: Setvariable2
+                    $ref: '#/node-output/Set variable 2/response/payload'
+                  - variable: HTTPInvokemethod
+                    $ref: '#/node-output/HTTP Invoke method/response/payload'
+                  - variable: HTTPInvokemethodMetadata
+                    $ref: '#/node-output/HTTP Invoke method/response'
+                  - variable: JSONParserParse2
+                    $ref: '#/node-output/JSON Parser Parse 2/response/payload'
+                  - variable: Setvariable
+                    $ref: '#/node-output/Set variable/response/payload'
+                  - variable: HTTPInvokemethod2
+                    $ref: '#/node-output/HTTP Invoke method 2/response/payload'
+                  - variable: HTTPInvokemethod2Metadata
+                    $ref: '#/node-output/HTTP Invoke method 2/response'
+                mappings:
+                  - customMessages:
+                      mappings:
+                        - request_object:
+                            expression: '$HTTPInvokemethod2 '
+                        - response_object:
+                            expression: '$HTTPInvokemethodMetadata '
+                  - logLevel:
+                      template: Debug
+                  - logMessage:
+                      template: >-
+                        S4S Sync Supply Call Successful. API Response Code :
+                        {{$HTTPInvokemethod2Metadata."status-code"}}
+                customSchemas:
+                  properties.`customMessages`:
+                    type: object
+                    properties:
+                      request_object:
+                        type: object
+                        properties: {}
+                      response_object:
+                        type: object
+                        properties: {}
           - if:
               name: If 2
               input:
@@ -495,9 +550,9 @@ integration:
                         - variable: HTTPInvokemethod2Metadata
                           $ref: '#/node-output/HTTP Invoke method 2/response'
                       message: >-
-                        '"S4S Sync Supply Failed With Error":  S4S URL:
-                        {{$Setvariable2.variable."s4s-supplies-url"}}/{{$JSONParserParse2.iv_tenant_id}}/suppliers/{{$JSONParserParse2.supplier_id}}/supplies
-                        , {{$HTTPInvokemethod2.responseBody}} '
+                        '"S4S Sync Supply Failed With Error":  
+                        {{$HTTPInvokemethod2.responseBody}}. S4S URL:
+                        {{$JSONParserParse2.url}} '
                       status-code: 400
               output-schema: {}
           - logging:
@@ -528,12 +583,13 @@ integration:
                       template: Info
                   - logMessage:
                       template: >-
-                        "Sync Supply Called successfully for the Buyer SCBN
+                        Response just before responding to SCBN call. S4S Sync
+                        Supply Called successfully for the Buyer SCBN
                         ID:{{$CSVParserParse[0]."customer id"}} , Mail Slot
                         ID:{{$Request.MSlotID}} and Supplier
                         ID:{{$JSONParserParse2.supplier_id}}", S4S Token Serivce
-                        URL:{{$Setvariable2.variable."s4s-url"}},S4S Sync Supply
-                        URL: {{$JSONParserParse2.url}}
+                        URL:{{$Setvariable2.variable."s4s-url"}}, S4S Sync
+                        Supply URL: {{$JSONParserParse2.url}}
           - response:
               name: response-1
               reply-maps:
